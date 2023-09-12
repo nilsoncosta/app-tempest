@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Tempest Data</title>
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <style>
+        .fixed {
+            max-height: 800px!important;
+            min-height: 800px!important;
+            max-width: 400px!important;
+            min-width: 400px!important;
+            background-color: #830AD1;
+            color: white;
+        }
+        .all {
+            max-height: 800px!important;
+            min-height: 800px!important;
+            position: relative;
+        }
+        spanError{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+        h4 {
+            text-align: left; 
+            padding-left: 15px;
+        }
+        </style>
+</head>
+
+<body>
+
+    <div class="fixed">
+        <span>
+            <h1 style="text-align: center;">Dados Climáticos<h3>
+        </span>
+        <div class="all">
+        <span>
+            <br>
+            <br>
+            <h4 id="station">Estação: <h4>
+            <h4 id="temperatura">Temperatura: <h4>
+            <h4 id="umidade">Umidade do Ar: <h4>
+            <h4 id="dia">Data: <h4>
+            <h4 id="hora">Hora: <h4>
+        </span>
+
+        <script>
+            //var HOST = location.origin.replace(/^http/, 'ws')
+            var ws = new WebSocket('ws://localhost:9090?token=3652387623-45634857634534-3456345873465874873456437-111111');
+            var el;
+
+            ws.onopen = function () {
+                alert('Connection Open');
+            };
+
+            ws.onerror = function (error) {
+                alert('Error');
+            };
+
+            ws.onmessage = function (event) {
+                const data = JSON.parse(event.data);
+                var vet_date = data.local_date.split(" ");
+                var estacao = document.getElementById('station');
+                var temperatura = document.getElementById('temperatura');
+                var umidade = document.getElementById('umidade');
+                var dia = document.getElementById('dia');
+                var hora = document.getElementById('hora');
+                if (data.station_id != null && data.station_id != undefined){
+                    estacao.innerHTML = 'Estação: ' + data.station_id;
+                    temperatura.innerHTML = 'Temperatura: ' + data.air_temperature;
+                    umidade.innerHTML = 'Umidade do Ar: ' + data.relative_humidity;
+                    dia.innerHTML = 'Data: ' + vet_date[0];
+                    hora.innerHTML = 'Hora: ' + vet_date[1];
+                } else {
+                    estacao.innerHTML = 'Estação: ';
+                    temperatura.innerHTML = 'Temperatura: ';
+                    umidade.innerHTML = 'Umidade do Ar: ';
+                    dia.innerHTML = 'Data: ';
+                    hora.innerHTML = 'Hora: ';
+                }
+
+            };
+        </script>
+        </div>
+    </div>
+</body>
+
+</html>
