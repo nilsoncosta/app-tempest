@@ -25,6 +25,8 @@ const stationService = {
                         info.obs[0].sea_level_pressure, info.obs[0].solar_radiation, info.obs[0].station_pressure, info.obs[0].wind_direction, info.obs[0].wind_chill];
         return await myConnection.query(sql, values);
     },
+
+
 }
 
 module.exports = {stationService}

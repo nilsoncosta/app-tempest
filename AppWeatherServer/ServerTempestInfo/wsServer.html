@@ -42,7 +42,7 @@
         <span>
             <br>
             <br>
-            <h4 id="station">Estação:></h4>
+            <h4 id="station">Estação:</h4>
             <h4 id="temperatura">Temperatura: </h4>
             <h4 id="umidade">Umidade do Ar: </h4>
             <h4 id="wind_direction">Direção do Vento: </h4>
@@ -55,7 +55,12 @@
 
         <script>
             //var HOST = location.origin.replace(/^http/, 'ws')
-            var ws = new WebSocket('ws://34.151.239.214/ws?token=3652387623-45634857634534-3456345873465874873456437-395634');
+            //<h4 id="wind_speed">Vento speed: </h4>
+
+ 	    var ws = new WebSocket('ws://35.247.228.38/ws?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2OTU5MTc2MTYsImV4cCI6MTcwMzc4MzYxNiwiYXVkIjoiIiwic3ViIjoiIiwibmFtZSI6IlNoZWlsYSBTaWx2YSIsInBlcmZpbCI6InVzZXIiLCJFbWFpbCI6InNzaWx2YUBleGFtcGxlLmNvbSIsInN0YXRpb25JZCI6IjExMDUxOSJ9.mJF0fk0xJJXGolQoiSzphLk7U4oH_hHFr9EIHJsoWYg&station_id=110519');
+            //var ws = new WebSocket('ws://35.247.228.38/ws?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEzNTk2LCJpc3MiOiJodHRwczpcL1wvc3VyZnZpZXcuY29tLmJyXC9hcGlcL2F1dGhlbnRpY2F0ZSIsImlhdCI6MTY5NTM4NjM2MiwiZXhwIjoxNzAzMjcwMzYyLCJuYmYiOjE2OTUzODYzNjIsImp0aSI6IjEzMzE3NWJkYTBkMTFiNTU2MmRkZDI2M2U5OTMwNzhiIn0._Egj2nnA1odCEjSR2a6FM__Nz3SmFEWnc78E7dCQ-Bo&station_id=110519');
+            //var ws = new WebSocket('ws://35.247.228.38/ws?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2OTU5MTc2MTYsImV4cCI6MTcyNzU0MzYxNiwiYXVkIjoiIiwic3ViIjoiIiwibmFtZSI6IlNoZWlsYSBTaWx2YSIsInBlcmZpbCI6InVzZXIiLCJFbWFpbCI6InNzaWx2YUBleGFtcGxlLmNvbSIsInN0YXRpb25JZCI6IjExMDUxOSJ9.0pQIhH7h7EoTzkvZJ7CLexgOKhbfmbRB42a7Iz0Ujx0');
+            //var ws = new WebSocket('ws://LOCALHOST:9090/ws?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2OTU5MTc2MTYsImV4cCI6MTcyNzU0MzYxNiwiYXVkIjoiIiwic3ViIjoiIiwibmFtZSI6IlNoZWlsYSBTaWx2YSIsInBlcmZpbCI6InVzZXIiLCJFbWFpbCI6InNzaWx2YUBleGFtcGxlLmNvbSIsInN0YXRpb25JZCI6IjExMDUxOSJ9.0pQIhH7h7EoTzkvZJ7CLexgOKhbfmbRB42a7Iz0Ujx0');
             var el;
 
             ws.onopen = function () {
@@ -75,6 +80,7 @@
                 var umidade = document.getElementById('umidade');
 
                 var velocidade = document.getElementById('wind_chill');
+                //var speed = document.getElementById('wind_speed');
                 var direcao = document.getElementById('wind_direction');
                 var radiacao = document.getElementById('solar_radiation');
                 var luminosidade = document.getElementById('brightness');
@@ -82,6 +88,7 @@
                 var dia = document.getElementById('dia');
                 var hora = document.getElementById('hora');
                 if (data.station_id != null && data.station_id != undefined){
+		    if (data.type == 'general'){		
                     estacao.innerHTML = 'Estação: ' + data.station_id;
                     temperatura.innerHTML = 'Temperatura: ' + data.air_temperature;
                     umidade.innerHTML = 'Umidade do Ar: ' + data.relative_humidity;
@@ -90,6 +97,12 @@
                     velocidade.innerHTML = 'Velocidade do Vento: ' + data.wind_chill;
                     radiacao.innerHTML = 'Radiação Solar: ' + data.solar_radiation;
                     luminosidade.innerHTML = 'Luminosidade: ' + data.brightness;
+		    }
+		    if (data.type == 'wind'){		
+                    direcao.innerHTML = 'Direção do Vento: ' + data.wind_direction;
+                    velocidade.innerHTML = 'Velocidade do Vento: ' + data.wind_speed;
+                    //speed.innerHTML = 'Vento speed: ' + data.wind_speed;
+		    }
 
                     dia.innerHTML = 'Data: ' + vet_date[0];
                     hora.innerHTML = 'Hora: ' + vet_date[1];
@@ -107,8 +120,28 @@
                 }
 
             };
+
+ 	    //var ws2 = new WebSocket('wss://ws.weatherflow.com/swd/data?token=ad8f24b6-8f26-4325-83a6-7a6aa9d016ad');
+            //var el;
+
+            //ws2.onopen = function () {
+            //    alert('Connection Tempest Open');
+    	    //    ws2.send('{"type":"listen_rapid_start", "device_id":279089, "id":"34643643645"}')
+            //};
+
+            //ws2.onerror = function (error) {
+            //    alert('Error Tempest');
+            //};
+
+            //ws2.onmessage = function (event) {
+            //    console.log(event.data);
+            //    console.log(new Date());
+            //    var ret = document.getElementById('ret');
+            //    ret.innerText = event.data;
+            //};
         </script>
         </div>
+        <div><span id="ret"></span></div>
     </div>
 </body>
 

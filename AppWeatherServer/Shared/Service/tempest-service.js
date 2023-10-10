@@ -14,6 +14,7 @@ const tempestService = {
     const response = await tempestClient.request({
       url: `/stations?token=${process.env.WF_TOKEN}`,
       method: "GET",
+      Headers: {'Content-Type': 'application/json'}
     })
     return response.data
   },

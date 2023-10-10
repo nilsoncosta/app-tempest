@@ -55,7 +55,8 @@
 
         <script>
             //var HOST = location.origin.replace(/^http/, 'ws')
-            var ws = new WebSocket('ws://34.151.239.214/ws?token=3652387623-45634857634534-3456345873465874873456437-395634');
+            //var ws = new WebSocket('ws://34.151.239.214/ws?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJmaWwiOiJ1c2VyIiwibmFtZSI6IkFsZXggTW9yYWVzIiwiZW1haWwiOiJtb3JhZXMuYWxleEBnYW1pbC5jb20iLCJpZCI6MTUxNjIzOTAyMiwic3RhdGlvbklkIjoxMTA1MTl9.ac5kUCTJexxuU-hZXhRjoBDADxAHfSGbsO1yWPc3JT8');
+            var ws = new WebSocket('ws://LOCALHOST:9090/ws?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwZXJmaWwiOiJ1c2VyIiwibmFtZSI6IkFsZXggTW9yYWVzIiwiZW1haWwiOiJtb3JhZXMuYWxleEBnYW1pbC5jb20iLCJpZCI6MTUxNjIzOTAyMiwic3RhdGlvbklkIjoxMTA1MTl9.ac5kUCTJexxuU-hZXhRjoBDADxAHfSGbsO1yWPc3JT8&station_id=110519');
             var el;
 
             ws.onopen = function () {
@@ -75,6 +76,7 @@
                 var umidade = document.getElementById('umidade');
 
                 var velocidade = document.getElementById('wind_chill');
+                //var speed = document.getElementById('wind_speed');
                 var direcao = document.getElementById('wind_direction');
                 var radiacao = document.getElementById('solar_radiation');
                 var luminosidade = document.getElementById('brightness');
@@ -82,6 +84,7 @@
                 var dia = document.getElementById('dia');
                 var hora = document.getElementById('hora');
                 if (data.station_id != null && data.station_id != undefined){
+		    if (data.type == 'general'){		
                     estacao.innerHTML = 'Estação: ' + data.station_id;
                     temperatura.innerHTML = 'Temperatura: ' + data.air_temperature;
                     umidade.innerHTML = 'Umidade do Ar: ' + data.relative_humidity;
@@ -90,6 +93,12 @@
                     velocidade.innerHTML = 'Velocidade do Vento: ' + data.wind_chill;
                     radiacao.innerHTML = 'Radiação Solar: ' + data.solar_radiation;
                     luminosidade.innerHTML = 'Luminosidade: ' + data.brightness;
+		    }
+		    if (data.type == 'wind'){		
+                    direcao.innerHTML = 'Direção do Vento: ' + data.wind_direction;
+                    velocidade.innerHTML = 'Velocidade do Vento: ' + data.wind_speed;
+                    //speed.innerHTML = 'Vento speed: ' + data.wind_speed;
+		    }
 
                     dia.innerHTML = 'Data: ' + vet_date[0];
                     hora.innerHTML = 'Hora: ' + vet_date[1];
